@@ -1,0 +1,5 @@
+aws_region = "us-east-1"
+cluster_name = "statuspage-cluster"
+db_username = "statuspage"
+db_password = "REPLACE_WITH_STRONG_PASSWORD"
+ecr_repo_name = "statuspage"
