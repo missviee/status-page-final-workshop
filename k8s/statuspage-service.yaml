@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    owner: dr_admin
+  name: dr-statuspage-service
+spec:
+  selector:
+    app: dr-statuspage-app
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP

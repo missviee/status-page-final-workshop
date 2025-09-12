@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dr_statuspage
+  labels:
+    owner: dr_admin
+    app: dr_statuspage
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dr_statuspage_app
+  template:
+    metadata:
+      labels:
+        app: dr_statuspage_app
+    spec:
+      containers:
+      - name: dr_statuspage_app
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr-statuspage-app:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - secretRef:
+            name: statuspage-secrets
