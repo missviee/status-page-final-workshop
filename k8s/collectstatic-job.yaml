@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: statuspage-collectstatic
+  labels:
+    owner: dr_admin
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: collectstatic
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr-statuspage-app:latest
+        command: ["python", "manage.py", "collectstatic", "--noinput"]
+        envFrom:
+        - secretRef:
+            name: db-secrets
+        - secretRef:
+            name: statuspage-secrets
+        - secretRef:
+            name: redis-secret
+  backoffLimit: 1
+
