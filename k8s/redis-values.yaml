@@ -1,0 +1,12 @@
+architecture: standalone
+usePassword: true
+
+auth:
+  existingSecret: redis-secret
+  existingSecretPasswordKey: REDIS_PASSWORD
+
+persistence:
+  enabled: true
+  size: 8Gi
+  storageClass: gp2
+

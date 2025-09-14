@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dr_statuspage
+  name: dr-statuspage
   labels:
     owner: dr_admin
     app: dr_statuspage
@@ -22,4 +22,16 @@ spec:
         - containerPort: 8000
         envFrom:
         - secretRef:
+            name: db-secrets
+        - secretRef:
             name: statuspage-secrets
+        - secretRef:
+            name: redis-secret
+        env:
+        - name: DJANGO_SETTINGS_MODULE
+          value: "statuspage.settings"
+        - name: REDIS_HOST
+          value: "statuspage-redis-master"
+        - name: REDIS_PORT
+          value: "6379"
+

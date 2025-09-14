@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    owner: dr_admin
+  name: dr_statuspage-create-superuser
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: createsuperuser_dr
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr-statuspage-app:latest
+        command: ["python","manage.py","createsuperuser","--noinput"]
+        env:
+        - name: DJANGO_SUPERUSER_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: statuspage-secrets
+              key: DJANGO_SUPERUSER_USERNAME
+        - name: DJANGO_SUPERUSER_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: statuspage-secrets
+              key: DJANGO_SUPERUSER_EMAIL
+        - name: DJANGO_SUPERUSER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: statuspage-secrets
+              key: DJANGO_SUPERUSER_PASSWORD
+  backoffLimit: 1
