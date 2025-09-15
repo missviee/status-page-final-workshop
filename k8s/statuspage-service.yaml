@@ -6,7 +6,7 @@ metadata:
   name: dr-statuspage-service
 spec:
   selector:
-    app: dr-statuspage-app
+    app: dr_statuspage_app
   ports:
     - protocol: TCP
       port: 8000
