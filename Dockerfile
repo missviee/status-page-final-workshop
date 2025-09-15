@@ -16,7 +16,6 @@ RUN pip install --upgrade pip setuptools wheel && \
 
 COPY . /app
 
-RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 

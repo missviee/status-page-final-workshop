@@ -10,7 +10,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: createsuperuser_dr
-        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr-statuspage-app:latest
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest
         command: ["python","manage.py","createsuperuser","--noinput"]
         env:
         - name: DJANGO_SUPERUSER_USERNAME

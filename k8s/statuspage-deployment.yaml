@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: dr_statuspage_app
-        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr-statuspage-app:latest
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest
         ports:
         - containerPort: 8000
         envFrom:

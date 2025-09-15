@@ -1,0 +1,19 @@
+# --- Line endings configuration ---
+
+# Force Unix-style LF line endings for YAML (Kubernetes manifests)
+*.yaml text eol=lf
+*.yml  text eol=lf
+
+# Terraform files should also be LF
+*.tf   text eol=lf
+
+# Dockerfile must stay LF (Windows CRLF can break RUN commands)
+Dockerfile text eol=lf
+
+# Shell scripts must stay LF
+*.sh   text eol=lf
+
+# Markdown and text files normalize to LF
+*.md   text eol=lf
+*.txt  text eol=lf
+
