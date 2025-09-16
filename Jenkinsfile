@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image '992382545251.dkr.ecr.us-east-1.amazonaws.com/statuspage-placeholder:latest'
-            args '-u root:root' // optional, ensures we can run docker/helm/kubectl commands inside
-        }
-    }
+    agent any  // top-level agent must be any, kubernetes, label, or none
 
     environment {
         AWS_REGION = "us-east-1"
