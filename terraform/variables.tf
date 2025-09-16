@@ -46,3 +46,8 @@ variable "ecr_repo_name" {
   default = "dr_repo_statuspage"
 }
 
+variable "env" {
+  description = "Environment (dev, staging, prod)"
+  type        = string
+  default     = "dev"
+}

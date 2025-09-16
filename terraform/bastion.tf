@@ -15,6 +15,32 @@ resource "aws_security_group" "bastion_sg" {
     ]
   }
 
+  ingress {
+    description = "Port 8000 from my IP"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = [
+      "79.181.174.149/32",
+      "46.116.231.195/32"
+    ]
+  }
+
+
+  ingress {
+    description = "Port 8000 from my IP"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = [
+      "79.181.174.149/32",
+      "46.116.231.195/32"
+    ]
+  }
+
+
+
+
   egress {
     from_port   = 0
     to_port     = 0
