@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
       - name: statuspage-placeholder
-        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/statuspage-placeholder:latest
+        image: busybox:latest
+        command: ["sleep", "3600"]
         ports:
         - containerPort: 8000
 
