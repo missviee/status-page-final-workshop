@@ -4,10 +4,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Use the GitHub token safely
-                withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
-                    sh 'git clone https://$GITHUB_TOKEN@github.com/missviee/status-page-final-workshop.git'
-                }
+                // Checkout from GitHub using Jenkins credentials
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/cicd-setup']],
+                          userRemoteConfigs: [[
+                              url: 'https://github.com/missviee/status-page-final-workshop.git',
+                              credentialsId: 'github-token'
+                          ]]
+                ])
             }
         }
 
