@@ -1,9 +1,13 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image '992382545251.dkr.ecr.us-east-1.amazonaws.com/statuspage-placeholder:latest'
+            args '-u root:root' // optional, ensures we can run docker/helm/kubectl commands inside
+        }
+    }
 
     environment {
         AWS_REGION = "us-east-1"
-        // Use a separate placeholder ECR repo to avoid touching the real app
         ECR_URI = "992382545251.dkr.ecr.us-east-1.amazonaws.com/statuspage-placeholder"
         EKS_CLUSTER = "dr_statuspage_cluster"
     }

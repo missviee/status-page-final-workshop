@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: statuspage-placeholder
-  namespace: default
+  namespace: status-page
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: statuspage-placeholder
-        image: image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/statuspage-placeholder:latest
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/statuspage-placeholder:latest
         ports:
         - containerPort: 8000
 
