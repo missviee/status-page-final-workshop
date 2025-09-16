@@ -16,7 +16,7 @@ spec:
         app: dr_statuspage_app
     spec:
       containers:
-      - name: dr_statuspage_app
+      - name: dr-statuspage-app
         image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest
         ports:
         - containerPort: 8000
@@ -28,8 +28,8 @@ spec:
         - secretRef:
             name: redis-secret
         env:
-        - name: DJANGO_SETTINGS_MODULE
-          value: "statuspage.settings"
+        - name: STATUS_PAGE_CONFIGURATION
+          value: statuspage.configuration
         - name: REDIS_HOST
           value: "statuspage-redis-master"
         - name: REDIS_PORT

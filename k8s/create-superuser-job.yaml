@@ -3,29 +3,16 @@ kind: Job
 metadata:
   labels:
     owner: dr_admin
-  name: dr_statuspage-create-superuser
+  name: dr-statuspage-create-superuser
 spec:
   template:
     spec:
       restartPolicy: Never
       containers:
-      - name: createsuperuser_dr
+      - name: createsuperuser-dr
         image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest
         command: ["python","manage.py","createsuperuser","--noinput"]
-        env:
-        - name: DJANGO_SUPERUSER_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: statuspage-secrets
-              key: DJANGO_SUPERUSER_USERNAME
-        - name: DJANGO_SUPERUSER_EMAIL
-          valueFrom:
-            secretKeyRef:
-              name: statuspage-secrets
-              key: DJANGO_SUPERUSER_EMAIL
-        - name: DJANGO_SUPERUSER_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: statuspage-secrets
-              key: DJANGO_SUPERUSER_PASSWORD
+        envFrom:
+        - secretRef:
+            name: statuspage-secrets
   backoffLimit: 1
