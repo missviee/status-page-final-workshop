@@ -35,7 +35,7 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
                     sh '''
-                      source build.env
+                      . build.env
                       echo "=== Deploying placeholder app to EKS cluster $EKS_CLUSTER in $AWS_REGION ==="
                       aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER
                       
