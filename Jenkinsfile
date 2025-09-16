@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         AWS_REGION = "us-east-1"
-        ECR_URI = "992382545251.dkr.ecr.us-east-1.amazonaws.com/status-page"
+        # Use a separate placeholder ECR repo to avoid touching the real app
+        ECR_URI = "992382545251.dkr.ecr.us-east-1.amazonaws.com/statuspage-placeholder"
         EKS_CLUSTER = "dr_statuspage_cluster"
     }
 
@@ -20,26 +21,28 @@ pipeline {
             }
         }
 
-        stage('Build & Push Docker') {
+        stage('Build & Push Docker (Placeholder)') {
             steps {
                 sh '''
                   IMAGE_TAG=$(git rev-parse --short HEAD)
                   aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $(echo $ECR_URI | cut -d'/' -f1)
-                  docker build -t $ECR_URI:$IMAGE_TAG .
+                  docker build -t $ECR_URI:$IMAGE_TAG ./status-page-placeholder
                   docker push $ECR_URI:$IMAGE_TAG
                   echo "IMAGE=$ECR_URI:$IMAGE_TAG" > build.env
                 '''
             }
         }
 
-        stage('Deploy to EKS') {
+        stage('Deploy to EKS (Placeholder)') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
                     sh '''
                       source build.env
                       aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER
-                      kubectl -n status-page set image deployment/status-page status-page=$IMAGE || kubectl -n status-page apply -f k8s/
-                      kubectl -n status-page rollout status deployment/status-page --timeout=120s
+                      # Apply placeholder manifests instead of real app
+                      kubectl -n status-page apply -f k8s/statuspage-placeholder-deployment.yaml
+                      kubectl -n status-page apply -f k8s/statuspage-placeholder-service.yaml
+                      kubectl -n status-page rollout status deployment/statuspage-placeholder --timeout=120s
                     '''
                 }
             }
