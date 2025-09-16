@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // top-level agent must be any, kubernetes, label, or none
+    agent any  // run on any Jenkins agent
 
     environment {
         AWS_REGION = "us-east-1"
@@ -23,10 +23,9 @@ pipeline {
         stage('Build & Push Docker (Placeholder)') {
             steps {
                 sh '''
+                  echo "=== Simulating Docker build and push ==="
                   IMAGE_TAG=$(git rev-parse --short HEAD)
-                  aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $(echo $ECR_URI | cut -d'/' -f1)
-                  docker build -t $ECR_URI:$IMAGE_TAG ./status-page-placeholder
-                  docker push $ECR_URI:$IMAGE_TAG
+                  echo "Would build and push: $ECR_URI:$IMAGE_TAG"
                   echo "IMAGE=$ECR_URI:$IMAGE_TAG" > build.env
                 '''
             }
@@ -37,10 +36,14 @@ pipeline {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
                     sh '''
                       source build.env
+                      echo "=== Deploying placeholder app to EKS cluster $EKS_CLUSTER in $AWS_REGION ==="
                       aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER
+                      
                       # Apply placeholder manifests instead of real app
                       kubectl -n status-page apply -f k8s/statuspage-placeholder-deployment.yaml
                       kubectl -n status-page apply -f k8s/statuspage-placeholder-service.yaml
+                      
+                      echo "=== Waiting for rollout to complete ==="
                       kubectl -n status-page rollout status deployment/statuspage-placeholder --timeout=120s
                     '''
                 }
