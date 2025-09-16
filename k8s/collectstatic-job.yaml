@@ -19,5 +19,22 @@ spec:
             name: statuspage-secrets
         - secretRef:
             name: redis-secret
+        env:
+        - name: AWS_STORAGE_BUCKET_NAME
+          value: "dr-statuspage-static-dev"
+        - name: AWS_DEFAULT_ACL
+          value: "public-read"
+        - name: AWS_S3_REGION_NAME
+          value: "us-east-1"
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-creds
+              key: access_key
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-creds
+              key: secret_key    
   backoffLimit: 1
 

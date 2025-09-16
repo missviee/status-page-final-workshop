@@ -1,3 +1,6 @@
+import os
+
+
 #
 # Required Settings
 #
@@ -11,11 +14,11 @@ ALLOWED_HOSTS = ['*']
 # PostgreSQL database configuration. See the Django documentation for a complete list of available parameters:
 #   https://docs.djangoproject.com/en/stable/ref/settings/#databases
 DATABASE = {
-    'NAME': 'dr_statuspage',         # Database name
-    'USER': 'dr_admin_statuspage',               # PostgreSQL username
-    'PASSWORD': 'dradminroot',           # PostgreSQL password
-    'HOST': 'dr-statuspage-db.cx248m4we6k7.us-east-1.rds.amazonaws.com',      # Database server
-    'PORT': '5432',               # Database port (leave blank for default)
+    'NAME': os.getenv('DB_NAME','dr_statuspage'),         # Database name
+    'USER': os.getenv('DB_USER','dr_admin_statuspage'),               # PostgreSQL username
+    'PASSWORD': os.getenv('DB_PASSWORD',''),           # PostgreSQL password
+    'HOST': os.getenv('DB_HOST','dr-statuspage-db.cx248m4we6k7.us-east-1.rds.amazonaws.com'),      # Database server
+    'PORT': os.getenv('DB_PORT', '5432'),               # Database port (leave blank for default)
     'CONN_MAX_AGE': 300,      # Max database connection age
 }
 
@@ -23,12 +26,12 @@ DATABASE = {
 # for each. Full connection details are required.
 REDIS = {
     'tasks': {
-        'HOST': 'statuspage-redis-master',
-        'PORT': 6379,
+        'HOST': os.getenv('REDIS_HOST', 'statuspage-redis-master'),
+        'PORT': int(os.getenv('REDIS_PORT', '6379')),
         # Comment out `HOST` and `PORT` lines and uncomment the following if using Redis Sentinel
         # 'SENTINELS': [('mysentinel.redis.example.com', 6379)],
         # 'SENTINEL_SERVICE': 'status-page',
-        'PASSWORD': 'dradminroot',
+        'PASSWORD': os.getenv('REDIS_PASSWORD', ''),
         'DATABASE': 0,
         'SSL': False,
         # Set this to True to skip TLS certificate verification
@@ -36,12 +39,12 @@ REDIS = {
         # 'INSECURE_SKIP_TLS_VERIFY': False,
     },
     'caching': {
-        'HOST': 'statuspage-redis-master',
-        'PORT': 6379,
+        'HOST': os.getenv('REDIS_HOST', 'statuspage-redis-master'),
+        'PORT': int(os.getenv('REDIS_PORT', '6379')),
         # Comment out `HOST` and `PORT` lines and uncomment the following if using Redis Sentinel
         # 'SENTINELS': [('mysentinel.redis.example.com', 6379)],
         # 'SENTINEL_SERVICE': 'netbox',
-        'PASSWORD': 'dradminroot',
+        'PASSWORD': os.getenv('REDIS_PASSWORD', ''),
         'DATABASE': 1,
         'SSL': False,
         # Set this to True to skip TLS certificate verification
@@ -62,6 +65,25 @@ SECRET_KEY = 'jzo&yg@ri8opu@^)w@dods@8@z%msc!ou_qc(kin-_8c!m8n2-'
 #
 # Optional Settings
 #
+#AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+#AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+#AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+#AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-1")
+#AWS_S3_SIGNATURE_VERSION = "s3v4"
+#AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", "public-read")
+#
+#if AWS_STORAGE_BUCKET_NAME:
+#    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+#    STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
+ #   STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
+#    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
+#else:
+#    STATIC_URL = "/static/"
+#   STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+#    MEDIA_URL = "/media/"
+
+
+
 
 # Specify one or more name and email address tuples representing Status-Page administrators. These people will be notified of
 # application errors (assuming correct email settings are provided).
