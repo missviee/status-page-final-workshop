@@ -7,6 +7,4 @@ auth:
 
 persistence:
   enabled: true
-  size: 8Gi
-  storageClass: gp2
-
+  existingClaim: redis-data-statuspage-redis-master-0
