@@ -30,3 +30,7 @@ resource "aws_security_group_rule" "bastion_to_eks" {
   security_group_id        = module.eks.cluster_security_group_id
 }
 
+resource "aws_iam_role_policy_attachment" "eks_worker_ecr" {
+  role       = module.eks.eks_managed_node_groups["dr_nodes"].iam_role_name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
