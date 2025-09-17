@@ -1,0 +1,15 @@
+serviceMonitor:
+  enabled: true
+  additionalLabels:
+    release: monitoring
+
+rbac:
+  create: true
+
+service:
+  type: ClusterIP
+  port: 9115
+
+ingress:
+  enabled: false  
+
