@@ -36,3 +36,28 @@ jobs:
       run: |
         docker push 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push   # deploy only runs if build-and-push succeeds
+
+    steps:
+    - name: Restore kubeconfig from GitHub secret
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+
+    - name: Install kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+
+    - name: Update Kubernetes Deployment
+      run: |
+        kubectl set image deployment/dr-statuspage \
+          dr-statuspage-app=992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest \
+          -n default
+
+    - name: Verify rollout
+      run: |
+        kubectl rollout status deployment/dr-statuspage -n default
+
