@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    owner: dr_admin
+  name: dr-statuspage-create-superuser
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: createsuperuser-dr
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest
+        command: ["python","manage.py","createsuperuser","--noinput"]
+        envFrom:
+        - secretRef:
+            name: statuspage-secrets
+  backoffLimit: 1

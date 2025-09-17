@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: statuspage-collectstatic
+  labels:
+    owner: dr_admin
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: collectstatic
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest
+        command: ["python", "manage.py", "collectstatic", "--noinput", "-v", "3"]
+        envFrom:
+        - secretRef:
+            name: db-secrets
+        - secretRef:
+            name: statuspage-secrets
+        - secretRef:
+            name: redis-secret
+        env:
+        - name: AWS_STORAGE_BUCKET_NAME
+          value: "dr-statuspage-static-dev"
+        - name: AWS_S3_REGION_NAME
+          value: "us-east-1"
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-creds
+              key: access_key
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-creds
+              key: secret_key    
+  backoffLimit: 1
+
