@@ -35,7 +35,7 @@ jobs:
     - name: Restore kubeconfig from GitHub secret
       run: |
         mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+        echo "${{ secrets.KUBECONFIG }}" | base64 --decode > ~/.kube/config
 
     - name: Verify cluster connectivity
       run: |
