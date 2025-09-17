@@ -1,0 +1,28 @@
+name: CI/CD Build
+
+on:
+  push:
+    branches:
+      - CICD
+  pull_request:
+    branches:
+      - CICD
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Build Docker image from status-page folder
+      - name: Build Docker image
+        run: |
+          docker build -t my-app:latest ./status-page
+
+      # Step 3: Remove temporary Docker image (destroy)
+      - name: Remove temporary Docker image
+        run: docker rmi my-app:latest || true
+
