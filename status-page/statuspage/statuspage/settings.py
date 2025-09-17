@@ -253,12 +253,15 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 #STATIC_ROOT = BASE_DIR + '/static'
-#STATIC_URL = f'/{BASE_PATH}static/'
-#STATICFILES_DIRS = (
-#    os.path.join(BASE_DIR, 'project-static', 'dist'),
-#    os.path.join(BASE_DIR, 'project-static', 'img'),
-#    ('docs', os.path.join(BASE_DIR, 'project-static', 'docs')),  # Prefix with /docs
-#)
+#STATIC_URL = f'/{BASE_PATH}static/'#STATICFILES_DIRS = (
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "project-static", "dist"),
+    os.path.join(BASE_DIR, "project-static", "img"),
+    ("docs", os.path.join(BASE_DIR, "project-static", "docs")),
+)
+
+
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "dr-statuspage-static-dev")
