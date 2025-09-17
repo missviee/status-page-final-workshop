@@ -43,13 +43,20 @@ jobs:
     steps:
     - name: Restore kubeconfig from GitHub secret
       run: |
-        echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+
 
     - name: Install kubectl
       run: |
         curl -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
         chmod +x kubectl
         sudo mv kubectl /usr/local/bin/
+
+
+    - name: Verify cluster connectivity
+      run: |
+        kubectl get nodes
 
     - name: Update Kubernetes Deployment
       run: |
