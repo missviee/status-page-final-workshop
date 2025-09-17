@@ -1,28 +1,38 @@
-name: CI/CD Build
+name: CI/CD Build and Push to ECR
 
 on:
   push:
     branches:
-      - CICD
-  pull_request:
-    branches:
-      - CICD
+      - CICD  # or whichever branch you want
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # Step 2: Build Docker image from status-page folder
-      - name: Build Docker image
-        run: |
-          docker build -t my-app:latest ./status-page
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
 
-      # Step 3: Remove temporary Docker image (destroy)
-      - name: Remove temporary Docker image
-        run: docker rmi my-app:latest || true
+    - name: Login to ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build Docker image
+      run: |
+        docker build -t dr_repo_statuspage ./status-page
+
+    - name: Tag Docker image
+      run: |
+        docker tag dr_repo_statuspage:latest 992382545251.dkr.ecr.<your-region>.amazonaws.com/dr_repo_statuspage:latest
+
+    - name: Push Docker image to ECR
+      run: |
+        docker push 992382545251.dkr.ecr.<your-region>.amazonaws.com/dr_repo_statuspage:latest
 
