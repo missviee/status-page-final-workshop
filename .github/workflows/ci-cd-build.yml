@@ -30,9 +30,9 @@ jobs:
 
     - name: Tag Docker image
       run: |
-        docker tag dr_repo_statuspage:latest 992382545251.dkr.ecr.<your-region>.amazonaws.com/dr_repo_statuspage:latest
+        docker tag dr_repo_statuspage:latest 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest
 
     - name: Push Docker image to ECR
       run: |
-        docker push 992382545251.dkr.ecr.<your-region>.amazonaws.com/dr_repo_statuspage:latest
+        docker push 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest
 
