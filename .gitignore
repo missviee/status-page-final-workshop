@@ -9,3 +9,4 @@ redis-secret.yaml
 statuspage-secrets.yaml
 db-secrets.yaml
 aws-creds.yaml
+image.json
