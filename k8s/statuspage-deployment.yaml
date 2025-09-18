@@ -14,6 +14,7 @@ spec:
     metadata:
       labels:
         app: dr_statuspage_app
+        app.kubernetes.io/name: dr-statuspage
     spec:
       containers:
       - name: dr-statuspage-app
