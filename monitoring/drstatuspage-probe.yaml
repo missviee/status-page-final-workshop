@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: statuspage-probe
+  namespace: monitoring
+  labels:
+    release: monitoring   # חשוב! שם ה-Helm release של kube-prometheus-stack
+spec:
+  interval: 30s
+  module: http_2xx
+  prober:
+    url: blackbox-prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://app.drstatuspage.click
+

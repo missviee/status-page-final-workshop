@@ -1,0 +1,10 @@
+loki:
+  auth_enabled: false
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClassName: gp2
+
+promtail:
+  enabled: true
+

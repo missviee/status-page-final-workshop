@@ -9,3 +9,5 @@ redis-secret.yaml
 statuspage-secrets.yaml
 db-secrets.yaml
 aws-creds.yaml
+/monitoring/grafana-admin-secret.yaml
+
