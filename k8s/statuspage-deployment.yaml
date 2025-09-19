@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dr-statuspage
+  labels:
+    owner: dr_admin
+    app: dr_statuspage
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dr_statuspage_app
+  template:
+    metadata:
+      labels:
+        app: dr_statuspage_app
+        app.kubernetes.io/name: dr-statuspage
+    spec:
+      containers:
+      - name: dr-statuspage-app
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/dr_repo_statuspage:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - secretRef:
+            name: db-secrets
+        - secretRef:
+            name: statuspage-secrets
+        - secretRef:
+            name: redis-secret
+        env:
+        - name: STATUS_PAGE_CONFIGURATION
+          value: statuspage.configuration
+        - name: REDIS_HOST
+          value: "statuspage-redis-master"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: AWS_STORAGE_BUCKET_NAME
+          value: "dr-statuspage-static-dev"
+        - name: AWS_DEFAULT_ACL
+          value: "public-read"
+        - name: AWS_S3_REGION_NAME
+          value: "us-east-1"
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-creds
+              key: access_key
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-creds
+              key: secret_key  
+
+
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: POSTGRES_DB
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: POSTGRES_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: POSTGRES_PASSWORD
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: POSTGRES_HOST
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: POSTGRES_PORT
+

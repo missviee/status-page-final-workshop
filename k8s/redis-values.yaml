@@ -1,0 +1,10 @@
+architecture: standalone
+usePassword: true
+
+auth:
+  existingSecret: redis-secret
+  existingSecretPasswordKey: REDIS_PASSWORD
+
+persistence:
+  enabled: true
+  existingClaim: redis-data-statuspage-redis-master-0

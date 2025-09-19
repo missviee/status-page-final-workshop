@@ -1,0 +1,12 @@
+terraform.tfvars
+.terraform
+.terraform.lock.hcl
+plan.tfplan
+tfplan
+terraform.tfstate
+terraform.tfstate.backup
+redis-secret.yaml
+statuspage-secrets.yaml
+db-secrets.yaml
+aws-creds.yaml
+image.json
